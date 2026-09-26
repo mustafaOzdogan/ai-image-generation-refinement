@@ -1,0 +1,4 @@
+autogenstudio
+openai
+Pillow
+python-dotenv
