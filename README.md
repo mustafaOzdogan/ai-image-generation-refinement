@@ -471,9 +471,3 @@ Potential improvements include:
                             ▼           └──► Iterate
                           Finish
 ```
-
----
-
-## License
-
-Add your preferred license here.
