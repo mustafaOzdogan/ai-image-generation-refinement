@@ -1,0 +1,204 @@
+{
+  "provider": "autogen_agentchat.teams.SelectorGroupChat",
+  "component_type": "team",
+  "version": 1,
+  "component_version": 1,
+  "description": "A multi-agent image generation and validation workflow using SelectorGroupChat. An ImageGeneratorAgent generates images and an ImageValidatorAgent validates and refines them until the requirements are satisfied.",
+  "label": "Selector Team_17901",
+  "config": {
+    "name": "SelectorGroupChat",
+    "description": "A SelectorGroupChat team that coordinates image generation, image validation, and iterative refinement.",
+    "participants": [
+      {
+        "provider": "autogen_agentchat.agents.AssistantAgent",
+        "component_type": "agent",
+        "version": 2,
+        "component_version": 2,
+        "description": "Generates images based on user requirements and incorporates feedback from the Image Validator Agent to improve the generated result.\n",
+        "label": "ImageGeneratorAgent",
+        "config": {
+          "name": "image_generator_agent",
+          "model_client": {
+            "provider": "autogen_ext.models.openai.OpenAIChatCompletionClient",
+            "component_type": "model",
+            "version": 1,
+            "component_version": 1,
+            "description": "Chat completion client for OpenAI hosted models.",
+            "label": "OpenAIChatCompletionClient",
+            "config": {
+              "model": "gpt-4o-mini"
+            }
+          },
+          "model_context": {
+            "provider": "autogen_core.model_context.UnboundedChatCompletionContext",
+            "component_type": "chat_completion_context",
+            "version": 1,
+            "component_version": 1,
+            "description": "An unbounded chat completion context that retains all messages in the conversation.",
+            "label": "UnboundedChatCompletionContext",
+            "config": {}
+          },
+          "description": "An agent that generates images from user requirements and refines them based on validation feedback.",
+          "system_message": "You are an Image Generator Agent.\n\nYour role is to generate images based on the user's requirements.\n\nWhen generating an image:\n\n1. Carefully preserve the original user requirements.\n2. Generate the image using the image generation tool.\n3. After the image is generated, clearly report the generated image path.\n4. The ImageValidatorAgent will validate the generated image.\n5. If the validator returns VALIDATION: FAIL, carefully read the OBSERVATION and CORRECTION fields.\n6. Generate a new image that addresses the CORRECTION.\n7. Preserve all original user requirements that were already satisfied.\n8. Do not simply repeat the previous image prompt.\n9. Do not declare the image as valid yourself.\n\nAlways include both the original user requirements and the generated image path in your response using exactly this format:\n\nREQUIREMENTS: <original user request>\nIMAGE_PATH: <generated image path>",
+          "model_client_stream": false,
+          "reflect_on_tool_use": false,
+          "tool_call_summary_format": "{result}",
+          "max_tool_iterations": 1,
+          "metadata": {},
+          "tools": [
+            {
+              "provider": "autogen_core.tools.FunctionTool",
+              "component_type": "tool",
+              "version": 1,
+              "component_version": 1,
+              "description": "Generates images using OpenAI's gpt-image-1-mini model from text descriptions.",
+              "label": "Image Generation Tool",
+              "config": {
+                "source_code": "async def generate_image(\n    query: str, output_dir: Optional[Path] = None, image_size: Literal[\"1024x1024\", \"512x512\", \"256x256\"] = \"1024x1024\"\n) -> List[str]:\n    \"\"\"\n    Generate images using OpenAI's gpt-image-1-mini model based on a text description.\n\n    Args:\n        query: Natural language description of the desired image\n        output_dir: Directory to save generated images (default: current directory)\n        image_size: Size of generated image (1024x1024, 512x512, or 256x256)\n\n    Returns:\n        List[str]: Paths to the generated image files\n    \"\"\"\n    # Initialize the OpenAI client\n    client = OpenAI()\n\n    # Generate images using gpt-image-1-mini\n    response = client.images.generate(model=\"gpt-image-1-mini\", prompt=query, n=1, size=image_size)\n\n    saved_files = []\n\n    # Process the response\n    if response.data:\n        for image_data in response.data:\n            # Generate a unique filename\n            file_name: str = f\"{uuid.uuid4()}.png\"\n\n            # Use output_dir if provided, otherwise use current directory\n            file_path = Path(output_dir) / file_name if output_dir else Path(file_name)\n\n            base64_str = image_data.b64_json\n            if base64_str:\n                img = Image.open(io.BytesIO(base64.decodebytes(bytes(base64_str, \"utf-8\"))))\n                # Save the image to a file\n                img.save(file_path)\n                saved_files.append(str(file_path))\n\n    return saved_files\n",
+                "name": "generate_image",
+                "description": "Generates images using OpenAI's gpt-image-1-mini model from text descriptions.",
+                "global_imports": [
+                  "io",
+                  "uuid",
+                  "base64",
+                  {
+                    "module": "typing",
+                    "imports": [
+                      "List",
+                      "Optional",
+                      "Literal"
+                    ]
+                  },
+                  {
+                    "module": "pathlib",
+                    "imports": [
+                      "Path"
+                    ]
+                  },
+                  {
+                    "module": "openai",
+                    "imports": [
+                      "OpenAI"
+                    ]
+                  },
+                  {
+                    "module": "PIL",
+                    "imports": [
+                      "Image"
+                    ]
+                  }
+                ],
+                "has_cancellation_support": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "provider": "autogen_agentchat.agents.AssistantAgent",
+        "component_type": "agent",
+        "version": 2,
+        "component_version": 2,
+        "description": "Evaluates generated images against the user’s requirements and provides clear feedback on quality, accuracy, and compliance with the given criteria.\n",
+        "label": "ImageValidatorAgent",
+        "config": {
+          "name": "image_validator_agent",
+          "model_client": {
+            "provider": "autogen_ext.models.openai.OpenAIChatCompletionClient",
+            "component_type": "model",
+            "version": 1,
+            "component_version": 1,
+            "description": "Chat completion client for OpenAI hosted models.",
+            "label": "OpenAIChatCompletionClient",
+            "config": {
+              "model": "gpt-4o-mini"
+            }
+          },
+          "model_context": {
+            "provider": "autogen_core.model_context.UnboundedChatCompletionContext",
+            "component_type": "chat_completion_context",
+            "version": 1,
+            "component_version": 1,
+            "description": "An unbounded chat completion context that retains all messages in the conversation.",
+            "label": "UnboundedChatCompletionContext",
+            "config": {}
+          },
+          "description": "An agent that validates generated images against user requirements and provides correction feedback for iterative refinement.",
+          "system_message": "You are an Image Validator Agent.\n\nYour job is to validate the generated image against the original user requirements.\n\nThe ImageGeneratorAgent will provide the generated image path and the original user requirements.\n\nWhen an image has been generated:\n\n1. Call the validate_image tool.\n2. Pass the exact generated image path as image_path.\n3. Pass the original user requirements as requirements.\n4. Do not search the conversation history for the requirements.\n5. Do not invent additional requirements.\n6. Do not declare PASS or FAIL based on your own visual judgment.\n7. The validate_image tool is responsible for evaluating the image.\n\nIf the validate_image tool returns:\n\nVALIDATION: PASS\n\nreturn exactly:\n\nPASS\n\nIf the validate_image tool returns:\n\nVALIDATION: FAIL\nOBSERVATION: ...\nCORRECTION: ...\n\nreturn the complete validation feedback from the tool.\n\nNever return PASS unless the validate_image tool returned VALIDATION: PASS.",
+          "model_client_stream": false,
+          "reflect_on_tool_use": false,
+          "tool_call_summary_format": "{result}",
+          "max_tool_iterations": 1,
+          "metadata": {},
+          "tools": [
+            {
+              "provider": "autogen_core.tools.FunctionTool",
+              "component_type": "tool",
+              "version": 1,
+              "component_version": 1,
+              "description": "Validates a generated image against the explicitly provided user requirements and returns structured validation feedback.",
+              "label": "Validate Image",
+              "config": {
+                "source_code": "import base64\nimport os\nfrom openai import OpenAI\n\n\ndef validate_image(image_path: str,  requirements: str) -> str:\n    \"\"\"\n    Validates a generated image against the original user requirements.\n\n    Args:\n        image_path: Path of the generated image.\n        requirements: Original user requirements for the image.\n\n    Returns:\n        PASS if the image satisfies the requirements, otherwise FAIL with an explanation.\n    \"\"\"\n       \n    api_key = os.environ['OPENAI_API_KEY']\n\n    if not api_key:\n        raise RuntimeError(\n            \"OPENAI_API_KEY environment variable bulunamadı.\"\n        )\n\n    client = OpenAI(api_key=api_key)\n\n    # Function to encode the image  \n    def encode_image(image_path):\n        with open(image_path, \"rb\") as image_file:\n            return base64.b64encode(image_file.read()).decode(\"utf-8\")\n        \n    # Getting the base64 string\n    base64_image = encode_image(image_path)\n    \n    validation_prompt = f\"\"\"\n                        Inspect this generated image and compare it against the original user requirements.\n\n                        ORIGINAL USER REQUIREMENTS:\n                        {requirements}\n\n                        Check the generated image against ONLY the requirements explicitly stated above.\n\n                        Check:\n                        - Subject\n                        - Composition\n                        - Objects\n                        - Colors\n                        - Style\n                        - Text\n                        - Positioning\n                        - Background\n                        - Other explicitly requested details\n\n                        Do not invent additional requirements.\n\n                        Return exactly one of these formats:\n\n                        VALIDATION: PASS\n\n                        or\n\n                        VALIDATION: FAIL\n                        OBSERVATION: <what is wrong in the generated image>\n                        CORRECTION: <exactly what the image generator should change>\n                        \"\"\"\n    \n    response = client.chat.completions.create(\n        model=\"gpt-4.1-mini\",\n        messages=[\n            {\n                \"role\": \"user\",\n                \"content\": [\n                    {\n                        \"type\": \"text\",\n                        \"text\": validation_prompt                        \n                    },\n                    {\n                        \"type\": \"image_url\",\n                        \"image_url\": {\n                            \"url\": f\"data:image/png;base64,{base64_image}\"\n                        }\n                    }\n                ]\n            }\n        ],\n        max_tokens=300\n    )\n    \n    return response.choices[0].message.content\n",
+                "name": "validate_image",
+                "global_imports": [],
+                "description": "Validate a generated image against the explicitly provided user requirements. Requires the exact image path and the original user requirements.",
+                "has_cancellation_support": false
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "model_client": {
+      "provider": "autogen_ext.models.openai.OpenAIChatCompletionClient",
+      "component_type": "model",
+      "version": 1,
+      "component_version": 1,
+      "description": "Chat completion client for OpenAI hosted models.",
+      "label": "OpenAIChatCompletionClient",
+      "config": {
+        "model": "gpt-4o-mini"
+      }
+    },
+    "termination_condition": {
+      "provider": "autogen_agentchat.base.OrTerminationCondition",
+      "component_type": "termination",
+      "version": 1,
+      "component_version": 1,
+      "label": "OrTerminationCondition",
+      "config": {
+        "conditions": [
+          {
+            "provider": "autogen_agentchat.conditions.TextMentionTermination",
+            "component_type": "termination",
+            "version": 1,
+            "component_version": 1,
+            "description": "Terminate the conversation if a specific text is mentioned.",
+            "label": "TextMentionTermination",
+            "config": {
+              "text": "PASS"
+            }
+          },
+          {
+            "provider": "autogen_agentchat.conditions.MaxMessageTermination",
+            "component_type": "termination",
+            "version": 1,
+            "component_version": 1,
+            "description": "Terminate the conversation after a maximum number of messages have been exchanged.",
+            "label": "MaxMessageTermination",
+            "config": {
+              "max_messages": 10,
+              "include_agent_event": false
+            }
+          }
+        ]
+      }
+    },
+    "selector_prompt": "You are selecting the next agent in an image generation and validation workflow.\n\nAvailable agents:\n{roles}\n\nFollow these rules:\n\n1. If the user has provided a new image generation request and no image has been generated yet, select ImageGeneratorAgent.\n\n2. If ImageGeneratorAgent has generated an image and provided both REQUIREMENTS and IMAGE_PATH, select ImageValidatorAgent.\n\n3. If ImageValidatorAgent returns VALIDATION: FAIL with actionable feedback, select ImageGeneratorAgent.\n\n4. ImageValidatorAgent must never be selected before ImageGeneratorAgent has provided an IMAGE_PATH.\n\n5. After the initial generation, ImageGeneratorAgent should only be selected after ImageValidatorAgent has returned FAIL with actionable feedback.\n\n6. Do not select the same agent repeatedly without a new relevant result from the previous step.\n\nRead the conversation history carefully.\n\nSelect exactly one agent from {participants}.\nReturn only the agent name.\n\n{history}",
+    "allow_repeated_speaker": false,
+    "max_selector_attempts": 3,
+    "emit_team_events": false,
+    "model_client_streaming": false
+  }
+}
