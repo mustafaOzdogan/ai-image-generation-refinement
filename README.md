@@ -40,7 +40,7 @@ The main goal is to demonstrate an **agentic feedback loop** rather than a simpl
                                  ▼
                     ┌─────────────────────────┐
                     │  Image Generation Tool  │
-                    │     gpt-image-1-mini     │
+                    │     gpt-image-1-mini    │
                     └────────────┬────────────┘
                                  │
                                  ▼
