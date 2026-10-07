@@ -226,7 +226,9 @@ This provides a simple contract between the validation and generation stages.
 │   ├── validation_pass.md
 │   └── iterative_refinement.md
 ├── images/
-│   └── .gitkeep
+│   ├── cat-4-ears-animatic.png
+│   └── cat-3-ears-animatic.png
+│   └── ...
 ├── requirements.txt
 ├── .gitignore
 └── .env.example
