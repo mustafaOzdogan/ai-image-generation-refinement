@@ -298,6 +298,18 @@ The correction is passed back to the image generator through the agent conversat
 
 ---
 
+## Technology Stack
+
+| Component              | Technology          |
+| ---------------------- | ------------------- |
+| Agent Framework        | Microsoft AutoGen   |
+| Orchestration          | `SelectorGroupChat` |
+| Agent Reasoning        | `gpt-4o-mini`       |
+| Image Generation       | `gpt-image-1-mini`  |
+| Image Validation       | `gpt-4.1-mini`      |
+| Language               | Python              |
+| Workflow Configuration | AutoGen Studio      |
+
 ## Project Structure
 
 ```text
@@ -315,6 +327,7 @@ The correction is passed back to the image generator through the agent conversat
 ├── images/
 │   └── .gitkeep
 ├── requirements.txt
+├── .gitignore
 └── .env.example
 ```
 
