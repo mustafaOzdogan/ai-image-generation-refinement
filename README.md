@@ -8,8 +8,6 @@ he system generates an image from a user requirement, validates the result again
 
 The goal is to demonstrate an **agentic feedback loop** rather than a simple image generation API call.
 
----
-
 ## Why This Project?
 
 Image generation models can produce visually plausible results while still failing explicit user requirements.
