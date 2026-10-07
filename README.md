@@ -124,6 +124,8 @@ Create a picture of a cat with exactly 3 ears.
 ```
 ### First Generation
 
+The image generator produces an image that does not fully satisfy the requirement.
+
 **Result:** Cat with 4 ears ❌
 
 <img src="images/cat-4-ears-animatic.png" alt="First generation - cat with 4 ears" width="500">
@@ -142,15 +144,15 @@ CORRECTION:
 Generate the cat with exactly three ears.
 ```
 
-The correction is passed back to the generator.
-
 ### Refinement
+
+The correction feedback is passed back to ImageGeneratorAgent, which generates a new image while preserving the original requirement.
 
 **Result:** Cat with 3 ears ✅
 
 <img src="images/cat-3-ears-animatic.png" alt="Refined generation - cat with 3 ears" width="500">
 
-### Second Validation
+### Final Validation
 
 ```text
 ImageValidatorAgent
@@ -162,7 +164,12 @@ Workflow completed
 
 The important part is that the first generated image is **not automatically accepted**.
 
-The validator's feedback becomes input to the next generation cycle.
+The workflow terminates after the generated image satisfies the original requirement.
+
+**Generate → Validate → Refine → Validate**
+
+This demonstrates how validator feedback becomes an active input to the next generation cycle rather than a passive final check.
+
 
 ## Validation Contract
 
