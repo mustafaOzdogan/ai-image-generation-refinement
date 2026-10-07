@@ -137,79 +137,15 @@ This cycle continues until the validation succeeds or the configured termination
 
 ---
 
-## Use Cases
+## Example: Iterative Refinement
 
-### 1. Basic Image Generation
-
-A simple request can be handled by the workflow:
+### User Requirement
 
 ```text
-User:
-Create a picture of a cat.
-```
-
-The generator creates the image and the validator checks whether the generated image satisfies the request.
-
-If the requirements are satisfied:
-
-```text
-VALIDATION: PASS
-```
-
-The validator agent returns:
-
-```text
-PASS
-```
-
-and the workflow terminates.
-
----
-
-### 2. Requirement-Based Image Validation
-
-The validator does not simply check whether an image exists.
-
-It evaluates the generated image against the **explicit requirements provided by the user**.
-
-For example:
-
-```text
-User:
 Create a picture of a cat with exactly 3 ears.
 ```
 
-The generator may initially produce an incorrect image:
-
-```text
-Generated Image:
-Cat with 4 ears
-```
-
-The validator can return:
-
-```text
-VALIDATION: FAIL
-OBSERVATION: The cat has four ears instead of three.
-CORRECTION: Generate the cat with exactly three ears.
-```
-
-The validation result is then used as feedback for the next generation cycle.
-
----
-
-### 3. Iterative Image Refinement
-
-This is the primary use case demonstrated by the project.
-
-Example workflow:
-
-```text
-User:
-Create a picture of a cat with exactly 3 ears.
-```
-
-First generation:
+### First Generation
 
 ```text
 ImageGeneratorAgent
@@ -219,18 +155,23 @@ Generated Image
 Cat with 4 ears
 ```
 
-Validation:
+### Validation
 
 ```text
 ImageValidatorAgent
         ↓
 VALIDATION: FAIL
         ↓
-Correction:
-"Generate the cat with exactly three ears."
+OBSERVATION:
+The cat has four ears instead of three.
+
+CORRECTION:
+Generate the cat with exactly three ears.
 ```
 
-The `SelectorGroupChat` then selects the generator again:
+The correction is passed back to the generator.
+
+### Refinement
 
 ```text
 ImageGeneratorAgent
@@ -240,19 +181,19 @@ New Image
 Cat with 3 ears
 ```
 
-Second validation:
+### Second Validation
 
 ```text
 ImageValidatorAgent
         ↓
 VALIDATION: PASS
         ↓
-PASS
-        ↓
 Workflow completed
 ```
 
-This demonstrates that the system can use validation feedback to trigger another generation cycle instead of simply accepting the first generated result.
+The important part is that the first generated image is **not automatically accepted**.
+
+The validator's feedback becomes input to the next generation cycle.
 
 ## Validation Contract
 
