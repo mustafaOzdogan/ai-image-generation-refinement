@@ -1,19 +1,66 @@
-# Multi-Agent Image Generation & Validation
+# AI Image Generation & Iterative Refinement
 
 A multi-agent image generation workflow built with **Microsoft AutoGen `SelectorGroupChat`**.
 
-The system generates images from user requirements, validates the generated image against those requirements, and automatically triggers an iterative refinement cycle when validation fails.
+he system generates an image from a user requirement, validates the result against the original requirements, and automatically triggers a new generation cycle when validation fails.
 
-## Features
+> **Generate → Validate → Refine → Validate**
 
-- 🤖 Multi-agent image generation
-- 🔍 Multimodal requirement validation
-- 🔄 Automatic iterative refinement
-- 🧠 Dynamic agent selection with `SelectorGroupChat`
-- 🛠️ Tool-based image generation and validation
-- 📋 Structured validation feedback
-- 🛑 Configurable termination conditions
-- 🎨 OpenAI image generation
+The goal is to demonstrate an **agentic feedback loop** rather than a simple image generation API call.
+
+---
+
+## Why This Project?
+
+Image generation models can produce visually plausible results while still failing explicit user requirements.
+
+For example:
+
+> "Create a picture of a cat with exactly 3 ears."
+
+An image generator may produce a cat with four ears.
+
+Instead of accepting the first result, this project introduces a second agent that evaluates the generated image against the original requirements.
+
+If validation fails, structured feedback is sent back to the generator and the image is regenerated.
+
+This creates an iterative, feedback-driven workflow:
+
+```text
+User Requirement
+       │
+       ▼
+Image Generation
+       │
+       ▼
+Image Validation
+       │
+   ┌───┴────┐
+   │        │
+ PASS      FAIL
+   │        │
+   ▼        ▼
+ Finish   Feedback
+            │
+            ▼
+      Regenerate Image
+            │
+            └──────► Validate Again
+```
+
+## Key Features
+
+* 🤖 Multi-agent image generation
+* 🔍 Multimodal requirement validation
+* 🔄 Automatic iterative refinement
+* 🧠 Dynamic agent selection with `SelectorGroupChat`
+* 🛠️ Tool-based image generation and validation
+* 📋 Structured validation feedback
+* 🛑 Configurable termination conditions
+* 🎨 OpenAI image generation
+* 🧩 AutoGen Studio workflow configuration
+
+---
 
 ## Overview
 
