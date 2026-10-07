@@ -2,7 +2,7 @@
 
 A multi-agent image generation workflow built with **Microsoft AutoGen `SelectorGroupChat`**.
 
-he system generates an image from a user requirement, validates the result against the original requirements, and automatically triggers a new generation cycle when validation fails.
+The system generates an image from a user requirement, validates the result against the original requirements, and automatically triggers a new generation cycle when validation fails.
 
 > **Generate → Validate → Refine → Validate**
 
