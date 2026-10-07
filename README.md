@@ -446,8 +446,6 @@ This project demonstrates:
 
 The main architectural idea is to treat **validation as an active feedback mechanism**, rather than as a final passive check.
 
----
-
 ## Limitations
 
 The validation process is model-based and therefore may not perfectly detect every visual discrepancy.
@@ -455,8 +453,6 @@ The validation process is model-based and therefore may not perfectly detect eve
 The current workflow also relies on the generated image being accessible through the file path provided by the image generation tool.
 
 The number of refinement cycles is limited by the team's termination configuration.
-
----
 
 ## Future Improvements
 
@@ -471,8 +467,6 @@ Potential improvements include:
 * Separating requirement validation from visual quality validation
 * Adding additional specialized validators
 * Supporting different image generation providers
-
----
 
 ## License
 
