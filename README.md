@@ -122,6 +122,11 @@ This cycle continues until the validation succeeds or the configured termination
 ```text
 Create a picture of a cat with exactly 3 ears.
 ```
+### First Generation
+
+**Result:** Cat with 4 ears ❌
+
+![First generation - cat with 4 ears](images/cat-4-ears.png)
 
 ### First Generation
 
