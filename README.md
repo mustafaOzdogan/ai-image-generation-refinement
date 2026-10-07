@@ -320,8 +320,6 @@ The correction is passed back to the image generator through the agent conversat
 
 The `selector_group_chat.json` file contains the complete AutoGen `SelectorGroupChat` configuration exported from AutoGen Studio.
 
----
-
 ## Configuration
 
 The main workflow is defined in:
@@ -339,12 +337,6 @@ The configuration contains:
 * Image validation tool
 * Selector prompt
 * Termination conditions
-
-The team uses `gpt-4o-mini` for agent reasoning and `gpt-image-1-mini` for image generation.
-
-The validation tool currently uses `gpt-4.1-mini` for image analysis.
-
----
 
 ## Environment Variables
 
