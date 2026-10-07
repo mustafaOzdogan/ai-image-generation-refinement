@@ -296,7 +296,7 @@ CORRECTION: <what should be changed>
 
 The correction is passed back to the image generator through the agent conversation.
 
----
+This provides a simple contract between the validation and generation stages.
 
 ## Technology Stack
 
