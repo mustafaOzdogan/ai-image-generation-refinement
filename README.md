@@ -113,8 +113,6 @@ The agents have deliberately separated responsibilities:
 
 This cycle continues until the validation succeeds or the configured termination condition is reached.
 
----
-
 ## Example: Iterative Refinement
 
 ### User Requirement
