@@ -423,7 +423,7 @@ PASS     FAIL
  ▼        ▼
 END   ImageGeneratorAgent
           ↓
-    ImageValidatorAgent
+      ImageValidatorAgent
           ↓
          ...
 ```
