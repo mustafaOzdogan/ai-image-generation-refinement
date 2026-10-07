@@ -22,29 +22,7 @@ Instead of accepting the first result, this project introduces a second agent th
 
 If validation fails, structured feedback is sent back to the generator and the image is regenerated.
 
-This creates an iterative, feedback-driven workflow:
-
-```text
-User Requirement
-       │
-       ▼
-Image Generation
-       │
-       ▼
-Image Validation
-       │
-   ┌───┴────┐
-   │        │
- PASS      FAIL
-   │        │
-   ▼        ▼
- Finish   Feedback
-            │
-            ▼
-      Regenerate Image
-            │
-            └──────► Validate Again
-```
+This creates an iterative, feedback-driven workflow where validation is part of the execution loop rather than a final post-processing step.
 
 ## Key Features
 
@@ -64,9 +42,9 @@ Image Validation
 The workflow consists of two specialized agents coordinated by `SelectorGroupChat`.
 
 ```text
-                         ┌─────────────────┐
-                         │      User       │
-                         └────────┬────────┘
+                    ┌─────────────────────────┐
+                    │    User Requirement     │
+                    └─────────────┬───────────┘
                                   │
                                   ▼
                     ┌─────────────────────────┐
