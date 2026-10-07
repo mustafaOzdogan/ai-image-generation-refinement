@@ -146,13 +146,9 @@ The correction is passed back to the generator.
 
 ### Refinement
 
-```text
-ImageGeneratorAgent
-        ↓
-New Image
-        ↓
-Cat with 3 ears
-```
+**Result:** Cat with 3 ears ✅
+
+<img src="images/cat-3-ears-animatic.png" alt="Refined generation - cat with 3 ears" width="500">
 
 ### Second Validation
 
