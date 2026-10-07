@@ -348,21 +348,19 @@ The validation tool currently uses `gpt-4.1-mini` for image analysis.
 
 ## Environment Variables
 
-Create a `.env` file or configure the environment variable:
+Create a `.env` file:
 
-```text
+```env
 OPENAI_API_KEY=your_api_key_here
 ```
 
-Do not commit your API key to GitHub.
+Never commit your API key to GitHub.
 
-A `.env.example` file can be included as:
+A `.env.example` file is provided for configuration reference:
 
-```text
+```env
 OPENAI_API_KEY=
 ```
-
----
 
 ## Installation
 
@@ -384,8 +382,6 @@ Install the dependencies:
 pip install -r requirements.txt
 ```
 
----
-
 ## Running the Workflow
 
 The workflow can be imported into **AutoGen Studio** using the configuration file:
@@ -401,8 +397,6 @@ Create a picture of a cat with exactly 3 ears.
 ```
 
 The team should then execute the generation and validation loop automatically.
-
----
 
 ## Why SelectorGroupChat?
 
