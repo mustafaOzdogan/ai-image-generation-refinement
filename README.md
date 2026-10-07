@@ -119,9 +119,7 @@ The agents have deliberately separated responsibilities:
 * **Validator** focuses on evaluating the result.
 * **SelectorGroupChat** coordinates the workflow.
 
----
-
-## How It Works
+# How It Works
 
 1. The user provides an image generation requirement.
 2. `SelectorGroupChat` selects the `ImageGeneratorAgent`.
