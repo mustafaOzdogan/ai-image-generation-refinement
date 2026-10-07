@@ -4,6 +4,17 @@ A multi-agent image generation workflow built with **Microsoft AutoGen `Selector
 
 The system generates images from user requirements, validates the generated image against those requirements, and automatically triggers an iterative refinement cycle when validation fails.
 
+## Features
+
+- 🤖 Multi-agent image generation
+- 🔍 Multimodal requirement validation
+- 🔄 Automatic iterative refinement
+- 🧠 Dynamic agent selection with `SelectorGroupChat`
+- 🛠️ Tool-based image generation and validation
+- 📋 Structured validation feedback
+- 🛑 Configurable termination conditions
+- 🎨 OpenAI image generation
+
 ## Overview
 
 This project demonstrates how multiple AI agents can collaborate in an image generation workflow.
