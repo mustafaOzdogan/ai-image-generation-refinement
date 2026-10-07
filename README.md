@@ -471,3 +471,7 @@ Potential improvements include:
                             ▼           └──► Iterate
                           Finish
 ```
+
+## License
+
+This project is licensed under the MIT License.
