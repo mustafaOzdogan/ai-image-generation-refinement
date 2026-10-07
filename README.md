@@ -254,20 +254,6 @@ Workflow completed
 
 This demonstrates that the system can use validation feedback to trigger another generation cycle instead of simply accepting the first generated result.
 
----
-
-## Agent Responsibilities
-
-| Component               | Responsibility                                                |
-| ----------------------- | ------------------------------------------------------------- |
-| `ImageGeneratorAgent`   | Generates images and applies correction feedback              |
-| `ImageValidatorAgent`   | Validates generated images against explicit user requirements |
-| `SelectorGroupChat`     | Selects the next agent based on the current workflow state    |
-| `Image Generation Tool` | Generates images using `gpt-image-1-mini`                     |
-| `Validate Image Tool`   | Evaluates generated images and produces structured feedback   |
-
----
-
 ## Validation Contract
 
 The validation tool uses a simple structured response format.
