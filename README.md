@@ -406,27 +406,29 @@ The team should then execute the generation and validation loop automatically.
 
 ## Why SelectorGroupChat?
 
-`SelectorGroupChat` is used to dynamically determine which agent should act next.
+`SelectorGroupChat` dynamically determines which agent should act next based on the current workflow state.
 
-The selector follows the workflow rules:
+The intended flow is:
 
 ```text
-New request
-    ↓
+New Request
+     ↓
 ImageGeneratorAgent
-    ↓
+     ↓
 ImageValidatorAgent
-    ↓
-PASS → End
-    │
-    └── FAIL → ImageGeneratorAgent
-                    ↓
-               ImageValidatorAgent
+     ↓
+ ┌───┴────┐
+PASS     FAIL
+ │        │
+ ▼        ▼
+END   ImageGeneratorAgent
+          ↓
+    ImageValidatorAgent
+          ↓
+         ...
 ```
 
-This allows the workflow to continue iterating only when the validation result requires another generation.
-
----
+This makes the workflow suitable for iterative agent collaboration where the next action depends on the previous agent's output.
 
 ## Key Agentic AI Concepts
 
