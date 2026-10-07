@@ -126,17 +126,7 @@ Create a picture of a cat with exactly 3 ears.
 
 **Result:** Cat with 4 ears ❌
 
-![First generation - cat with 4 ears](images/cat-4-ears-animatic.png)
-
-### First Generation
-
-```text
-ImageGeneratorAgent
-        ↓
-Generated Image
-        ↓
-Cat with 4 ears
-```
+<img src="images/cat-4-ears-animatic.png" alt="First generation - cat with 4 ears" width="500">
 
 ### Validation
 
