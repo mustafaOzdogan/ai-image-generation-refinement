@@ -58,7 +58,6 @@ Image Validation
 * 🎨 OpenAI image generation
 * 🧩 AutoGen Studio workflow configuration
 
----
 
 ## Architecture
 
