@@ -164,7 +164,7 @@ The important part is that the first generated image is **not automatically acce
 
 The workflow terminates after the generated image satisfies the original requirement.
 
-**Generate → Validate → Refine → Validate**
+> **Generate → Validate → Refine → Validate**
 
 This demonstrates how validator feedback becomes an active input to the next generation cycle rather than a passive final check.
 
