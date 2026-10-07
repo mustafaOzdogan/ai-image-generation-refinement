@@ -119,7 +119,7 @@ The agents have deliberately separated responsibilities:
 * **Validator** focuses on evaluating the result.
 * **SelectorGroupChat** coordinates the workflow.
 
-# How It Works
+## How It Works
 
 1. The user provides an image generation requirement.
 2. `SelectorGroupChat` selects the `ImageGeneratorAgent`.
@@ -428,20 +428,23 @@ This allows the workflow to continue iterating only when the validation result r
 
 ---
 
-## Key Concepts Demonstrated
+## Key Agentic AI Concepts
 
-This project demonstrates several concepts relevant to agentic AI systems:
+This project demonstrates:
 
 * Multi-agent orchestration
 * Agent role separation
 * Tool calling
+* Multimodal AI
 * Image generation
-* Multimodal image validation
+* Image validation
 * Structured tool output
 * Feedback-driven refinement
 * Dynamic agent selection
-* Termination conditions
 * Iterative agent workflows
+* Termination conditions
+
+The main architectural idea is to treat **validation as an active feedback mechanism**, rather than as a final passive check.
 
 ---
 
