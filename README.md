@@ -62,23 +62,9 @@ Image Validation
 
 ---
 
-## Overview
-
-This project demonstrates how multiple AI agents can collaborate in an image generation workflow.
-
-The system consists of:
-
-* **ImageGeneratorAgent** — generates images and applies correction feedback.
-* **ImageValidatorAgent** — validates generated images against the original user requirements.
-* **SelectorGroupChat** — determines which agent should act next.
-* **Image Generation Tool** — generates images using OpenAI's `gpt-image-1-mini`.
-* **Validation Tool** — analyzes the generated image and returns structured validation feedback.
-
-The main goal is to demonstrate an **agentic feedback loop** rather than a simple image generation API call.
-
----
-
 ## Architecture
+
+The workflow consists of two specialized agents coordinated by `SelectorGroupChat`.
 
 ```text
                          ┌─────────────────┐
@@ -102,7 +88,7 @@ The main goal is to demonstrate an **agentic feedback loop** rather than a simpl
                     └────────────┬────────────┘
                                  │
                                  ▼
-                          Generated Image
+                           Generated Image
                                  │
                                  ▼
                     ┌─────────────────────────┐
@@ -116,39 +102,43 @@ The main goal is to demonstrate an **agentic feedback loop** rather than a simpl
                          ▼               ▼
                         END       Correction Feedback
                                          │
-                                         │
-                                         └──────► Generator
+                                         ▼
+                              ImageGeneratorAgent
 ```
+
+### Agent Responsibilities
+
+| Component             | Responsibility                                                |
+| --------------------- | ------------------------------------------------------------- |
+| `ImageGeneratorAgent` | Generates images and applies correction feedback              |
+| `ImageValidatorAgent` | Validates generated images against explicit user requirements |
+| `SelectorGroupChat`   | Determines which agent should act next                        |
+| Image Generation Tool | Generates images using `gpt-image-1-mini`                     |
+| Image Validation Tool | Analyzes generated images and produces structured feedback    |
+
+The agents have deliberately separated responsibilities:
+
+* **Generator** focuses on creating and refining the image.
+* **Validator** focuses on evaluating the result.
+* **SelectorGroupChat** coordinates the workflow.
 
 ---
 
 ## How It Works
 
-The workflow follows these steps:
-
-1. The user provides an image generation request.
+1. The user provides an image generation requirement.
 2. `SelectorGroupChat` selects the `ImageGeneratorAgent`.
-3. `ImageGeneratorAgent` generates an image using the image generation tool.
-4. The agent reports:
+3. The generator creates an image using the image generation tool.
+4. The generated image and original requirements are passed to the validator.
+5. `ImageValidatorAgent` evaluates the image.
+6. The validation tool returns either `PASS` or `FAIL`.
+7. If validation passes, the workflow terminates.
+8. If validation fails, the validator returns structured feedback.
+9. `SelectorGroupChat` selects the generator again.
+10. The generator uses the correction feedback while preserving requirements that were already satisfied.
+11. The new image is validated again.
 
-   * The original requirements
-   * The generated image path
-5. `SelectorGroupChat` selects the `ImageValidatorAgent`.
-6. `ImageValidatorAgent` sends the generated image and the original requirements to the validation tool.
-7. The validation tool returns either:
-
-   * `VALIDATION: PASS`
-   * `VALIDATION: FAIL`
-8. If validation passes, the workflow terminates.
-9. If validation fails, the validator provides:
-
-   * `OBSERVATION`
-   * `CORRECTION`
-10. `SelectorGroupChat` selects the `ImageGeneratorAgent` again.
-11. The generator creates a new image while preserving the requirements that were already satisfied.
-12. The new image is validated again.
-
-This creates an iterative generation → validation → refinement loop.
+This cycle continues until the validation succeeds or the configured termination condition is reached.
 
 ---
 
