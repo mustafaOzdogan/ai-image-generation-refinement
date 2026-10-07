@@ -100,7 +100,7 @@ The workflow consists of two specialized agents coordinated by `SelectorGroupCha
                         END       Correction Feedback
                                          │
                                          ▼
-                              ImageGeneratorAgent
+                                  ImageGeneratorAgent
 ```
 
 ### Agent Responsibilities
@@ -473,50 +473,6 @@ Potential improvements include:
 * Supporting different image generation providers
 
 ---
-
-## Example Workflow
-
-```text
-                    User Request
-                         │
-                         ▼
-                SelectorGroupChat
-                         │
-                         ▼
-              ImageGeneratorAgent
-                         │
-                         ▼
-               Image Generation
-                         │
-                         ▼
-                 Generated PNG
-                         │
-                         ▼
-              ImageValidatorAgent
-                         │
-                ┌────────┴────────┐
-                │                 │
-               PASS              FAIL
-                │                 │
-                ▼                 ▼
-              Finish        Correction Feedback
-                                  │
-                                  ▼
-                         ImageGeneratorAgent
-                                  │
-                                  ▼
-                           New Generation
-                                  │
-                                  ▼
-                         ImageValidatorAgent
-                                  │
-                            ┌─────┴─────┐
-                            │           │
-                           PASS        FAIL
-                            │           │
-                            ▼           └──► Iterate
-                          Finish
-```
 
 ## License
 
